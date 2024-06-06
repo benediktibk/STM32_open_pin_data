@@ -7,6 +7,8 @@ import xml.etree.ElementTree as ET
 import json
 from typing import List
 import re
+from pysat.formula import CNF
+from pysat.solvers import Solver
 
 
 def printError(
@@ -88,6 +90,24 @@ def processInput(inputFileNameAndPath: str):
         requiredInputs = int(inputFileContent["inputs"])
 
         print(f"{len(requiredSignals)} signals and {requiredInputs} inputs are required")
+
+        conjunctiveNormalForm = [
+            # A
+            [1, -3, -5], [-1, 3, -5], [-1, -3, 5],
+            # B
+            [2, -4, -6], [-2, 4, -6], [-2, -4, 6],
+            # PA0
+            [1, -2], [-1, 2], [-1, -2],
+            # PA1
+            [3, -4], [-3, 4], [-3, -4],
+            # PA2
+            [5, -6], [-5, 6], [-5, -6]
+        ]
+
+        with Solver(bootstrap_with=conjunctiveNormalForm) as solver:
+            print('formula is', f'{"s" if solver.solve() else "uns"}atisfiable')
+            print('and the model is:', solver.get_model())
+
 
         return True
 
