@@ -1,0 +1,8 @@
+{
+    "MCU": "STM32F746NGHx",
+    "inputs": "5",
+    "signals": [
+        "ADC2_IN9",
+        "LTDC_R6"
+    ]
+}
